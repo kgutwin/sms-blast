@@ -1,0 +1,45 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Creates a serverless SMS sending system
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  LeaderKey:
+    Type: String
+    Description: Shared secret for leader access
+
+Globals:
+  Function:
+    Runtime: python3.7
+    CodeUri: .
+
+Resources:
+  SMSTopic:
+    Type: AWS::SNS::Topic
+    
+  WebServer:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: smsblast.main.handler
+      Policies:
+        - Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action: "sns:*"
+              Resource: !Ref SMSTopic
+      Environment:
+        Variables:
+          LEADER_KEY: !Ref LeaderKey
+          SMS_TOPIC: !Ref SMSTopic
+      Events:
+        Web:
+          Type: HttpApi
+
+Outputs:
+  WebAddress:
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/admin"
+
+Metadata:
+  Sonde:
+    Parameters:
+      LeaderKey: abcd1259

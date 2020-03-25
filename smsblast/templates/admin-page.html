@@ -1,0 +1,33 @@
+<form method="POST">
+  <h2>Send a message</h2>
+  <input type="hidden" name="leaderkey" value="{leaderkey}">
+  <div class="ui input">
+    <input type="text" placeholder="Message to send..." name="message" style="width: 30em;">
+  </div>
+  <input class="ui button green" type="submit" name="action", value="Send">
+
+  <h2>Add numbers to list</h2>
+  <i>One number per line, format: 123-456-7890</i><br>
+  <div class="ui input">
+    <textarea name="numbers" rows="5" style="width: 30em;"></textarea>
+  </div>
+  <br>
+  <input class="ui button red" type="submit" name="action" value="Add numbers">
+
+  <h2>Number list</h2>
+  <input type="hidden" name="number" id="number" value="">
+  <table class="ui celled table">
+    <thead>
+      <tr>
+        <th>Number</th>
+        <th>Active</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {" ".join(number_list)}
+    </tbody>
+  </table>
+</form>
+
+{'<div class="ui message"><p>' + response + '</p></div>' if response else ''}
